@@ -8,12 +8,12 @@ spring:
       suffix: .jsp
 
 photoPrinter:
-  clientId: springsecurity
-  clientSecret: Teno2019
+  clientId: photo-printer
+  clientSecret: 1234
   grantType: authorization_code
   userAuthorizationUri: http://localhost:8090/auth/oauth/authorize
   accessTokenUri: http://localhost:8090/auth/oauth/token
   redirectUri: http://localhost:8080/redirect     
-  userInfoUri: http://localhost:8090/auth/user
+  tokenIntrospectUri: http://localhost:8090/auth/oauth/check_token
   photoResourceUri: http://localhost:9000/photos
   photoWithMetaResourceUri: http://localhost:9000/photos-with-meta

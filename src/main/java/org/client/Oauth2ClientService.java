@@ -36,8 +36,8 @@ public class Oauth2ClientService {
 	@Value("${photoPrinter.userAuthorizationUri}")
 	String userAuthorizationUri;
 	
-	@Value("${photoPrinter.userInfoUri}")
-	String userInfoUri;
+	@Value("${photoPrinter.tokenIntrospectUri}")
+	String tokenIntrospectUri;
 	
 	@Value("${photoPrinter.accessTokenUri}")
 	String accessTokenUri;
@@ -93,12 +93,20 @@ public class Oauth2ClientService {
 	}
 
 	public UserInfo fetchUserDetails(String accessToken) {
+
+		String credentials=clientId+":"+clientSecret;
+		String encodedCredentials = new String(Base64.encodeBase64(credentials.getBytes()));
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.add(OAuthConstants.AUTHORIZATION, OAuthConstants.BEARER+" " + accessToken);
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.add(OAuthConstants.AUTHORIZATION, OAuthConstants.BASIC+" " + encodedCredentials);
 
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(userInfoUri);
-		HttpEntity<?> entity= new HttpEntity<>(headers);
+		LinkedMultiValueMap<String, String> payload = new LinkedMultiValueMap<String, String>();
+		payload.add(OAuthConstants.TOKEN,accessToken);
+		
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(tokenIntrospectUri);
+		HttpEntity<?> entity= new HttpEntity<>(payload,headers);
 		URI uri = builder.build().encode().toUri();
 		HttpEntity<UserInfo> response = restTemplate.exchange(uri, HttpMethod.POST, entity, UserInfo.class);
 		return response.getBody();

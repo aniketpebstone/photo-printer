@@ -18,7 +18,7 @@ function getPhotos()
 </head>
 <body>
 <pre>
-Welcome ${userInfo.user.userName} (${userInfo.user.authorities[0].authority})  
+Welcome ${userInfo.userName} (${userInfo.authorities[0]})  
 <p>To get the photos from your google server please <button onClick='getPhotos()'> click here</button></p>
 <p id='photos'></p>
 </pre>

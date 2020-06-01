@@ -44,6 +44,7 @@ public class PhotoPrinterAppController {
 			 @RequestParam(value = "code", required = true) String code,HttpServletRequest request) throws ServletException, IOException{
 		log.info("Authorization code from server:{}",code);
 		AccessToken accessToken=service.getAccessToken(code);
+		log.info("Token:{}",accessToken.accessToken);
 		request.getSession().setAttribute("access_token", accessToken);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(URI.create("/user"));
